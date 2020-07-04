@@ -2,6 +2,7 @@ import torch
 from torch import nn
 import os
 import numpy as np
+from xml.etree import ElementTree
 
 def make_directory(base_path : str) -> int :
     """
@@ -66,26 +67,149 @@ def extract_weights(layer, layer_index, base_path) -> {} :
         parameter_dictionary["input-channels"] = layer.in_channels
         parameter_dictionary["output-channels"] = layer.out_channels
         # Assume weight matrix is never empty for nn.Conv2d()
-        parameter_dictionary["has-weights"] = 1
-        parameter_dictionary["weight-offset"] = 0
+        parameter_dictionary["has_weights"] = 1
+        parameter_dictionary["weight_offset"] = 0
         csv_name = "conv_weight_" + layer_index + ".csv"
-        parameter_dictionary["weight-csv"] = generate_csv(csv_name, layer.weight.detach(), base_path)
+        parameter_dictionary["weight_csv"] = generate_csv(csv_name, \
+            layer.weight.detach(), base_path)
         if layer.bias != None:
-            parameter_dictionary["has-bias"] = 1
-            parameter_dictionary["bias-offset"] = layer.bias.numel()
+            parameter_dictionary["has_bias"] = 1
+            parameter_dictionary["bias_offset"] = 0
             bias_csv_name = "conv_bias_" + layer_index + ".csv"
-            parameter_dictionary["bias-csv"] = generate_csv(bias_csv_name, layer.bias.detach(), base_path)
+            parameter_dictionary["bias_csv"] = generate_csv(bias_csv_name, \
+                layer.bias.detach(), base_path)
         else:
-            parameter_dictionary["has-bias"] = 0
-            parameter_dictionary["bias-offset"] = layer.out_channels
-            parameter_dictionary["bias-csv"] = "None"
-        
+            parameter_dictionary["has_bias"] = 0
+            parameter_dictionary["bias_offset"] = layer.out_channels
+            parameter_dictionary["bias_csv"] = "None"
+        parameter_dictionary["has_running_mean"] = 0
+        parameter_dictionary["running_mean_csv"] = "None"
+        parameter_dictionary["has_running_var"] = 0
+        parameter_dictionary["running_var_csv"] = "None"
+    elif isinstance(layer, nn.BatchNorm2d) :
+        # The layer corresponds to Batch Normalization layer.
+        # For batchnorm layer we require weights, biases and running mean and running variance
+        # to reproduce the same result.
+        parameter_dictionary["name"] = "BatchNorm2D"
+        parameter_dictionary["input-channels"] = layer.num_features
+        parameter_dictionary["output-channels"] = layer.num_features
+        # Assume weight matrix is never empty for nn.BatchNorm2d()
+        parameter_dictionary["has_weights"] = 1
+        parameter_dictionary["weight_offset"] = 0
+        csv_name = "batchnorm_weight_" + layer_index + ".csv"
+        parameter_dictionary["weight_csv"] = generate_csv(csv_name, \
+            layer.weight.detach(), base_path)
+        if layer.bias != None:
+            parameter_dictionary["has_bias"] = 1
+            parameter_dictionary["bias_offset"] = 0
+            bias_csv_name = "batchnorm_bias_" + layer_index + ".csv"
+            parameter_dictionary["bias_csv"] = generate_csv(bias_csv_name, \
+                layer.bias.detach(), base_path)
+        else:
+            parameter_dictionary["has_bias"] = 0
+            parameter_dictionary["bias_offset"] = layer.out_channels
+            parameter_dictionary["bias_csv"] = "None"
+        # Assume BatchNorm layer always running variance and running mean.
+        running_mean_csv = "batchnorm_running_mean_" + layer_index + ".csv"
+        parameter_dictionary["has_running_mean"] = 1
+        parameter_dictionary["running_mean_csv"] = generate_csv(running_mean_csv, \
+            layer.running_mean.detach(), base_path)
+        parameter_dictionary["has_running_var"] = 1
+        running_var_csv = "batchnorm_running_var_" + layer_index + ".csv" 
+        parameter_dictionary["running_var_csv"] = generate_csv(running_mean_csv, \
+            layer.running_var.detach(), base_path)
+    else :
+        # The layer corresponds to un-supported layer or layer doesn't have trainable
+        # parameter. Example of such layers are nn.MaxPooling2d() and nn.SoftMax.
+        parameter_dictionary["name"] = "unknown_layer"
+        parameter_dictionary["input-channels"] = 0
+        parameter_dictionary["output-channels"] = 0
+        parameter_dictionary["has_weights"] = 0
+        parameter_dictionary["weight_offset"] = 0
+        parameter_dictionary["weight_csv"] = "None"
+        parameter_dictionary["has_bias"] = 0
+        parameter_dictionary["bias_offset"] = 0
+        parameter_dictionary["bias_csv"] = "None"
+        parameter_dictionary["has_running_mean"] = 0
+        parameter_dictionary["running_mean_csv"] = "None"
+        parameter_dictionary["has_running_var"] = 0
+        parameter_dictionary["running_var_csv"] = "None"
     return parameter_dictionary
+
+def create_xml_tree(parameter_dictionary : dict, root_tag = "layer") -> ElementTree.ElementTree() :
+    """
+        Creates an XML tree from a dictionary wrapped around root tag.
+
+        Args:
+        parameter_dictionary : Dictionary which will be converted to xml tree.
+        root_tag : Tag around which elements of dictionary will be wrapped.
+                    Defaults to "layer".
+    
+        Returns : ElementTree.ElementTree() object.
+    """
+    layer = ElementTree.Element(root_tag)
+    for parameter_desc in parameter_dictionary :
+        parameter_description = ElementTree.Element(parameter_desc)
+        parameter_description.text = str(parameter_dictionary[parameter_desc])
+        layer.append(parameter_description)
+    return layer
+
+def create_xml_file(parameter_dictionary : dict,
+                    xml_path : str,
+                    root_tag : str,
+                    element_tag : str) -> int :
+    """
+        Appends layer description to xml file and if xml doesn't exist or is empty, 
+        creates an xml file with required headers.
+
+        Args:
+        parameter_dictionary : Dictionary containing layer description.
+        xml_path : Path where xml file will be stored / created.
+        root_tag : Tag around which xml file will be wrapped.
+        element_tag : Tag around which each element in dictionary will be wrapped.
+    """
+   
+    if not os.path.exists(xml_path) :
+        # Create base xml file.
+        f = open(xml_path, "w")
+        data = "<" + root_tag + ">" + "</" + root_tag + ">"
+        f.write(data)
+        f.close()
+    layer_description = create_xml_tree(parameter_dictionary, element_tag)
+    xml_file = ElementTree.parse(xml_path)
+    root = xml_file.getroot()
+    layer = root.makeelement(element_tag, parameter_dictionary)
+    root.append(layer_description)
+    xml_file.write(xml_path, encoding = "unicode")
+    return 0
+
+def iterate_over_layers(modules, xml_path, base_path, layer_index, debug : bool) -> int :
+    """
+        Parses model and generates csv and xml file which will be iterated by C++ translator.
+    
+        Args:
+        modules : PyTorch model for which parameter csv and xml will be created.
+        xml_path : Directory where xml with model config will be saved.
+        base_path : Directory where csv will be stored.
+
+        Returns 0 if weights are created else return 1.
+    """
+    for block in modules :
+        for layer in block :
+            layer_index += 1
+            parameter_dict = extract_weights(layer, str(layer_index), base_path)
+            create_xml_file(parameter_dict, xml_path, "model", "layer")
+            if not os.path.exists(parameter_dict["weight_csv"]) and parameter_dict["has_weights"] == 1:
+                print("Creating weights failed!")
+                return 1, layer_index
+            if debug :
+                print("Weights created succesfully for ", parameter_dict["name"], " layer index :", layer_index)
+    return 0, layer_index
 
 def parse_model(model, xml_path, base_path, debug : bool) -> int :
     """
         Parses model and generates csv and xml file which will be iterated by C++ translator.
-
+    
         Args:
         model : PyTorch model for which parameter csv and xml will be created.
         xml_path : Directory where xml with model config will be saved.
@@ -94,15 +218,16 @@ def parse_model(model, xml_path, base_path, debug : bool) -> int :
         Returns 0 if weights are created else return 1.
     """
     layer_index = 0
-    for modules in model.features:
-        for layer in modules:
-            layer_index += 1
-            parameter_dict = extract_weights(layer, str(layer_index), base_path)
-            if not os.path.exists(parameter_dict["weight-csv"]) and parameter_dict["has-weights"] == 0:
-                print("Creating weights failed!")
-                return 1
-            if debug :
-                print("Weights created succesfully for ", parameter_dict.name, " layer index :", layer_index)
+    error, layer_index = iterate_over_layers(model.features, xml_path, base_path, layer_index, debug)
+    if error :
+        print("An error occured!")
+        return 1
+    print(layer_index)
+    error, layer_index = iterate_over_layers(model.classifier, xml_path, base_path, layer_index, debug)
+    if error :
+        print("An error occured!")
+        return 1
+    print(layer_index)
     if debug :
         print("Model weights saved! Happy mlpack-translation.")
     return 0
