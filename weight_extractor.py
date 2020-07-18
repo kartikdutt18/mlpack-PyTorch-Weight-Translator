@@ -2,6 +2,7 @@ import torch
 from torch import nn
 import os
 import numpy as np
+import argparse
 from xml.etree import ElementTree
 
 def make_directory(base_path : str) -> int :
@@ -231,3 +232,12 @@ def parse_model(model, xml_path, base_path, debug : bool) -> int :
     if debug :
         print("Model weights saved! Happy mlpack-translation.")
     return 0
+
+if __name__ == "__main__":
+  parser = argparse.ArgumentParser(description='Generate mlpack-loadable training params.')
+  parser.add_argument('model', type = str, help = 'Name of model.')
+  args = parser.parse_args()
+  model = None
+  if args.model == 'darknet19' :
+    model = Darknet19(True)
+  parse_model(model, args.modell + "_config.xml", "./weights/" + args.model + "/", True)
