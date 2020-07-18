@@ -3,6 +3,7 @@ from torch import nn
 import os
 import numpy as np
 import argparse
+from models import *
 from xml.etree import ElementTree
 
 def make_directory(base_path : str) -> int :
@@ -240,4 +241,4 @@ if __name__ == "__main__":
   model = None
   if args.model == 'darknet19' :
     model = Darknet19(True)
-  parse_model(model, args.modell + "_config.xml", "./weights/" + args.model + "/", True)
+  parse_model(model, "./cfg/" + args.model + ".xml", "./models/" + args.model + "/mlpack-weights/", True)

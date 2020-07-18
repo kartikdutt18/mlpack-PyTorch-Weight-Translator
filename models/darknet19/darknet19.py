@@ -3,8 +3,10 @@ import torch
 from torch import nn
 import torch.nn.functional as F
 import torch.utils.model_zoo as model_zoo
-from base import BaseModel
+from ..base import BaseModel
 import numpy as np
+import os
+import sys
 from xml.etree import ElementTree
 
 class GlobalAvgPool2d(nn.Module):
@@ -115,7 +117,7 @@ class Darknet19(BaseModel):
         out = self.classifier(out)
         return out
     def load_weight(self):
-        weight_file = 'pytorch_weights/darknet19-deepBakSu-e1b3ec1e.pth'
+        weight_file = './models/darknet19/pytorch_weights/darknet19-deepBakSu-e1b3ec1e.pth'
         assert len(torch.load(weight_file).keys()) == len(self.state_dict().keys())
         dic = {}
         for now_keys, values in zip(self.state_dict().keys(), torch.load(weight_file).values()):

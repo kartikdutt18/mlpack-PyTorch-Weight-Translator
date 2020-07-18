@@ -1,2 +1,5 @@
-*/__pycache__/*
-*.xml
+*__pycache__/*
+*.pyc
+*~
+*.swp
+*.csv
