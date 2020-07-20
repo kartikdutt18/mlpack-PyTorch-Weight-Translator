@@ -51,6 +51,33 @@ void LoadWeights(mlpack::ann::FFN<OutputLayer, InitializationRule>& model,
   std::cout << currentOffset << std::endl;
 }
 
+template<typename LayerType = mlpack::ann::FFN<>>
+LayerType LoadRunningMeanAndVariance(LayerType baseLayer, size_t i = 0)
+{
+  while (i < baseLayer.Model().size() && !batchNormRunningMean.empty())
+  {
+    if (baseLayer.Model()[i].type() == typeid(new mlpack::ann::Sequential<>()))
+    {
+      std::cout << "Sequential Layer. " << i << std::endl;
+      baseLayer.Model()[i] = TraverseSeq(&baseLayer.Model()[i]);
+    }
+
+    if (!batchNormRunningMean.empty() &&
+        baseLayer.Model()[i].type() == typeid(new mlpack::ann::BatchNorm<>()))
+    {
+      std::cout << "BATCHNORM Layer " << i << std::endl;
+      arma::mat runningMean;
+      mlpack::data::Load(batchNormRunningMean.front(), runningMean);
+      batchNormRunningMean.pop();
+     // baseLayer.Model()[i].TrainingMean() = runningMean;
+     // baseLayer.Model()[i].TrainingMean().print();
+    }
+
+    i++;
+  }
+  return baseLayer;
+}
+
 int main(int argc, char **argv)
 {
   if (argc < 1)
@@ -63,11 +90,10 @@ int main(int argc, char **argv)
   {
     if (strncmp(argv[i], "darknet19", 9))
     {
-      // mlpack::ann::DarkNet<> model(3, 224, 224, 1000, "none", false);
-      mlpack::ann::FFN<> model;
-      model.ResetParameters();
-      model.Parameters() = arma::mat(20849577, 1);
-      LoadWeights<>(model, "./../cfg/darknet19.xml");
+      mlpack::ann::FFN<> model2;
+      model2.ResetParameters();
+      model2.Parameters() = arma::mat(20849576, 1);
+      LoadWeights<>(model2, "./../cfg/darknet19.xml");
     }
   }
 
