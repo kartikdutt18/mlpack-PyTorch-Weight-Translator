@@ -3,3 +3,16 @@
 *~
 *.swp
 *.csv
+*.o
+*.out
+/mlpack-loader/models/*
+*.bin
+build*
+xcode*
+.DS_Store
+.idea
+.ipynb_checkpoints
+cmake-build-*
+.*.sw*
+*.a
+*.so

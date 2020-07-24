@@ -52,14 +52,14 @@ void LoadWeights(mlpack::ann::FFN<OutputLayer, InitializationRule>& model,
 }
 
 template<typename LayerType = mlpack::ann::FFN<>>
-LayerType LoadRunningMeanAndVariance(LayerType baseLayer, size_t i = 0)
+LayerType LoadRunningMeanAndVariance(LayerType&& baseLayer, size_t i = 0)
 {
   while (i < baseLayer.Model().size() && !batchNormRunningMean.empty())
   {
     if (baseLayer.Model()[i].type() == typeid(new mlpack::ann::Sequential<>()))
     {
       std::cout << "Sequential Layer. " << i << std::endl;
-      baseLayer.Model()[i] = TraverseSeq(&baseLayer.Model()[i]);
+      LoadRunningMeanAndVariance<mlpack::ann::Sequential<>>(std::move(baseLayer.Model()[i]));
     }
 
     if (!batchNormRunningMean.empty() &&
