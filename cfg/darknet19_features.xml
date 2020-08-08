@@ -27,7 +27,7 @@
     <has_running_mean>1</has_running_mean>
     <running_mean_csv>./models/darknet19/mlpack-weights/batchnorm_running_mean_2.csv</running_mean_csv>
     <has_running_var>1</has_running_var>
-    <running_var_csv>./models/darknet19/mlpack-weights/batchnorm_running_var_2.csv</running_var_csv>
+    <running_var_csv>./models/darknet19/mlpack-weights/batchnorm_running_mean_2.csv</running_var_csv>
   </layer>
   <layer>
     <name>unknown_layer</name>
@@ -87,7 +87,7 @@
     <has_running_mean>1</has_running_mean>
     <running_mean_csv>./models/darknet19/mlpack-weights/batchnorm_running_mean_6.csv</running_mean_csv>
     <has_running_var>1</has_running_var>
-    <running_var_csv>./models/darknet19/mlpack-weights/batchnorm_running_var_6.csv</running_var_csv>
+    <running_var_csv>./models/darknet19/mlpack-weights/batchnorm_running_mean_6.csv</running_var_csv>
   </layer>
   <layer>
     <name>unknown_layer</name>
@@ -147,7 +147,7 @@
     <has_running_mean>1</has_running_mean>
     <running_mean_csv>./models/darknet19/mlpack-weights/batchnorm_running_mean_10.csv</running_mean_csv>
     <has_running_var>1</has_running_var>
-    <running_var_csv>./models/darknet19/mlpack-weights/batchnorm_running_var_10.csv</running_var_csv>
+    <running_var_csv>./models/darknet19/mlpack-weights/batchnorm_running_mean_10.csv</running_var_csv>
   </layer>
   <layer>
     <name>unknown_layer</name>
@@ -192,7 +192,7 @@
     <has_running_mean>1</has_running_mean>
     <running_mean_csv>./models/darknet19/mlpack-weights/batchnorm_running_mean_13.csv</running_mean_csv>
     <has_running_var>1</has_running_var>
-    <running_var_csv>./models/darknet19/mlpack-weights/batchnorm_running_var_13.csv</running_var_csv>
+    <running_var_csv>./models/darknet19/mlpack-weights/batchnorm_running_mean_13.csv</running_var_csv>
   </layer>
   <layer>
     <name>unknown_layer</name>
@@ -237,7 +237,7 @@
     <has_running_mean>1</has_running_mean>
     <running_mean_csv>./models/darknet19/mlpack-weights/batchnorm_running_mean_16.csv</running_mean_csv>
     <has_running_var>1</has_running_var>
-    <running_var_csv>./models/darknet19/mlpack-weights/batchnorm_running_var_16.csv</running_var_csv>
+    <running_var_csv>./models/darknet19/mlpack-weights/batchnorm_running_mean_16.csv</running_var_csv>
   </layer>
   <layer>
     <name>unknown_layer</name>
@@ -297,7 +297,7 @@
     <has_running_mean>1</has_running_mean>
     <running_mean_csv>./models/darknet19/mlpack-weights/batchnorm_running_mean_20.csv</running_mean_csv>
     <has_running_var>1</has_running_var>
-    <running_var_csv>./models/darknet19/mlpack-weights/batchnorm_running_var_20.csv</running_var_csv>
+    <running_var_csv>./models/darknet19/mlpack-weights/batchnorm_running_mean_20.csv</running_var_csv>
   </layer>
   <layer>
     <name>unknown_layer</name>
@@ -342,7 +342,7 @@
     <has_running_mean>1</has_running_mean>
     <running_mean_csv>./models/darknet19/mlpack-weights/batchnorm_running_mean_23.csv</running_mean_csv>
     <has_running_var>1</has_running_var>
-    <running_var_csv>./models/darknet19/mlpack-weights/batchnorm_running_var_23.csv</running_var_csv>
+    <running_var_csv>./models/darknet19/mlpack-weights/batchnorm_running_mean_23.csv</running_var_csv>
   </layer>
   <layer>
     <name>unknown_layer</name>
@@ -387,7 +387,7 @@
     <has_running_mean>1</has_running_mean>
     <running_mean_csv>./models/darknet19/mlpack-weights/batchnorm_running_mean_26.csv</running_mean_csv>
     <has_running_var>1</has_running_var>
-    <running_var_csv>./models/darknet19/mlpack-weights/batchnorm_running_var_26.csv</running_var_csv>
+    <running_var_csv>./models/darknet19/mlpack-weights/batchnorm_running_mean_26.csv</running_var_csv>
   </layer>
   <layer>
     <name>unknown_layer</name>
@@ -447,7 +447,7 @@
     <has_running_mean>1</has_running_mean>
     <running_mean_csv>./models/darknet19/mlpack-weights/batchnorm_running_mean_30.csv</running_mean_csv>
     <has_running_var>1</has_running_var>
-    <running_var_csv>./models/darknet19/mlpack-weights/batchnorm_running_var_30.csv</running_var_csv>
+    <running_var_csv>./models/darknet19/mlpack-weights/batchnorm_running_mean_30.csv</running_var_csv>
   </layer>
   <layer>
     <name>unknown_layer</name>
@@ -492,7 +492,7 @@
     <has_running_mean>1</has_running_mean>
     <running_mean_csv>./models/darknet19/mlpack-weights/batchnorm_running_mean_33.csv</running_mean_csv>
     <has_running_var>1</has_running_var>
-    <running_var_csv>./models/darknet19/mlpack-weights/batchnorm_running_var_33.csv</running_var_csv>
+    <running_var_csv>./models/darknet19/mlpack-weights/batchnorm_running_mean_33.csv</running_var_csv>
   </layer>
   <layer>
     <name>unknown_layer</name>
@@ -537,7 +537,7 @@
     <has_running_mean>1</has_running_mean>
     <running_mean_csv>./models/darknet19/mlpack-weights/batchnorm_running_mean_36.csv</running_mean_csv>
     <has_running_var>1</has_running_var>
-    <running_var_csv>./models/darknet19/mlpack-weights/batchnorm_running_var_36.csv</running_var_csv>
+    <running_var_csv>./models/darknet19/mlpack-weights/batchnorm_running_mean_36.csv</running_var_csv>
   </layer>
   <layer>
     <name>unknown_layer</name>
@@ -582,7 +582,7 @@
     <has_running_mean>1</has_running_mean>
     <running_mean_csv>./models/darknet19/mlpack-weights/batchnorm_running_mean_39.csv</running_mean_csv>
     <has_running_var>1</has_running_var>
-    <running_var_csv>./models/darknet19/mlpack-weights/batchnorm_running_var_39.csv</running_var_csv>
+    <running_var_csv>./models/darknet19/mlpack-weights/batchnorm_running_mean_39.csv</running_var_csv>
   </layer>
   <layer>
     <name>unknown_layer</name>
@@ -627,7 +627,7 @@
     <has_running_mean>1</has_running_mean>
     <running_mean_csv>./models/darknet19/mlpack-weights/batchnorm_running_mean_42.csv</running_mean_csv>
     <has_running_var>1</has_running_var>
-    <running_var_csv>./models/darknet19/mlpack-weights/batchnorm_running_var_42.csv</running_var_csv>
+    <running_var_csv>./models/darknet19/mlpack-weights/batchnorm_running_mean_42.csv</running_var_csv>
   </layer>
   <layer>
     <name>unknown_layer</name>
@@ -687,7 +687,7 @@
     <has_running_mean>1</has_running_mean>
     <running_mean_csv>./models/darknet19/mlpack-weights/batchnorm_running_mean_46.csv</running_mean_csv>
     <has_running_var>1</has_running_var>
-    <running_var_csv>./models/darknet19/mlpack-weights/batchnorm_running_var_46.csv</running_var_csv>
+    <running_var_csv>./models/darknet19/mlpack-weights/batchnorm_running_mean_46.csv</running_var_csv>
   </layer>
   <layer>
     <name>unknown_layer</name>
@@ -732,7 +732,7 @@
     <has_running_mean>1</has_running_mean>
     <running_mean_csv>./models/darknet19/mlpack-weights/batchnorm_running_mean_49.csv</running_mean_csv>
     <has_running_var>1</has_running_var>
-    <running_var_csv>./models/darknet19/mlpack-weights/batchnorm_running_var_49.csv</running_var_csv>
+    <running_var_csv>./models/darknet19/mlpack-weights/batchnorm_running_mean_49.csv</running_var_csv>
   </layer>
   <layer>
     <name>unknown_layer</name>
@@ -777,7 +777,7 @@
     <has_running_mean>1</has_running_mean>
     <running_mean_csv>./models/darknet19/mlpack-weights/batchnorm_running_mean_52.csv</running_mean_csv>
     <has_running_var>1</has_running_var>
-    <running_var_csv>./models/darknet19/mlpack-weights/batchnorm_running_var_52.csv</running_var_csv>
+    <running_var_csv>./models/darknet19/mlpack-weights/batchnorm_running_mean_52.csv</running_var_csv>
   </layer>
   <layer>
     <name>unknown_layer</name>
@@ -822,7 +822,7 @@
     <has_running_mean>1</has_running_mean>
     <running_mean_csv>./models/darknet19/mlpack-weights/batchnorm_running_mean_55.csv</running_mean_csv>
     <has_running_var>1</has_running_var>
-    <running_var_csv>./models/darknet19/mlpack-weights/batchnorm_running_var_55.csv</running_var_csv>
+    <running_var_csv>./models/darknet19/mlpack-weights/batchnorm_running_mean_55.csv</running_var_csv>
   </layer>
   <layer>
     <name>unknown_layer</name>
@@ -867,52 +867,7 @@
     <has_running_mean>1</has_running_mean>
     <running_mean_csv>./models/darknet19/mlpack-weights/batchnorm_running_mean_58.csv</running_mean_csv>
     <has_running_var>1</has_running_var>
-    <running_var_csv>./models/darknet19/mlpack-weights/batchnorm_running_var_58.csv</running_var_csv>
-  </layer>
-  <layer>
-    <name>unknown_layer</name>
-    <input-channels>0</input-channels>
-    <output-channels>0</output-channels>
-    <has_weights>0</has_weights>
-    <weight_offset>0</weight_offset>
-    <weight_csv>None</weight_csv>
-    <has_bias>0</has_bias>
-    <bias_offset>0</bias_offset>
-    <bias_csv>None</bias_csv>
-    <has_running_mean>0</has_running_mean>
-    <running_mean_csv>None</running_mean_csv>
-    <has_running_var>0</has_running_var>
-    <running_var_csv>None</running_var_csv>
-  </layer>
-  <layer>
-    <name>Convolution2D</name>
-    <input-channels>1024</input-channels>
-    <output-channels>1000</output-channels>
-    <has_weights>1</has_weights>
-    <weight_offset>0</weight_offset>
-    <weight_csv>./models/darknet19/mlpack-weights/conv_weight_60.csv</weight_csv>
-    <has_bias>1</has_bias>
-    <bias_offset>0</bias_offset>
-    <bias_csv>./models/darknet19/mlpack-weights/conv_bias_60.csv</bias_csv>
-    <has_running_mean>0</has_running_mean>
-    <running_mean_csv>None</running_mean_csv>
-    <has_running_var>0</has_running_var>
-    <running_var_csv>None</running_var_csv>
-  </layer>
-  <layer>
-    <name>unknown_layer</name>
-    <input-channels>0</input-channels>
-    <output-channels>0</output-channels>
-    <has_weights>0</has_weights>
-    <weight_offset>0</weight_offset>
-    <weight_csv>None</weight_csv>
-    <has_bias>0</has_bias>
-    <bias_offset>0</bias_offset>
-    <bias_csv>None</bias_csv>
-    <has_running_mean>0</has_running_mean>
-    <running_mean_csv>None</running_mean_csv>
-    <has_running_var>0</has_running_var>
-    <running_var_csv>None</running_var_csv>
+    <running_var_csv>./models/darknet19/mlpack-weights/batchnorm_running_mean_58.csv</running_var_csv>
   </layer>
   <layer>
     <name>unknown_layer</name>

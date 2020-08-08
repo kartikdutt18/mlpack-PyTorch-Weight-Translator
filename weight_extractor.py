@@ -39,7 +39,8 @@ def generate_csv(csv_name : str, weight_matrix : torch.tensor, base_path : str) 
     # Check if base path exists else create directory.
     make_directory(base_path)
     file_path = os.path.join(base_path, csv_name)
-    np.savetxt(file_path, weight_matrix.numpy().ravel())
+    matrix = weight_matrix.numpy().ravel()
+    np.savetxt(file_path, matrix, fmt='%1.128f')
     return file_path
 
 def extract_weights(layer, layer_index, base_path) -> {} :
@@ -118,7 +119,7 @@ def extract_weights(layer, layer_index, base_path) -> {} :
             layer.running_mean.detach(), base_path)
         parameter_dictionary["has_running_var"] = 1
         running_var_csv = "batchnorm_running_var_" + layer_index + ".csv" 
-        parameter_dictionary["running_var_csv"] = generate_csv(running_mean_csv, \
+        parameter_dictionary["running_var_csv"] = generate_csv(running_var_csv, \
             layer.running_var.detach(), base_path)
     else :
         # The layer corresponds to un-supported layer or layer doesn't have trainable
@@ -241,4 +242,5 @@ if __name__ == "__main__":
   model = None
   if args.model == 'darknet19' :
     model = Darknet19(True)
+    model.eval()
   parse_model(model, "./cfg/" + args.model + ".xml", "./models/" + args.model + "/mlpack-weights/", True)
