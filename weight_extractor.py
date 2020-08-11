@@ -244,3 +244,4 @@ if __name__ == "__main__":
     model = Darknet19(True)
     model.eval()
   parse_model(model, "./cfg/" + args.model + ".xml", "./models/" + args.model + "/mlpack-weights/", True)
+
