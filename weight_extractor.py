@@ -249,6 +249,6 @@ if __name__ == "__main__":
       input_tensor = torch.rand((1, 3, 224 * 2, 224 * 2))
       generate_csv("./input_tensor.csv", input_tensor, "./")
       output_tensor = model(input_tensor)
-      generate_csv("../output_tensor.csv", output_tensor.detach(), "./")
+      generate_csv("./output_tensor.csv", output_tensor.detach(), "./")
   parse_model(model, "./cfg/" + args.model + ".xml", "./models/" + args.model + "/mlpack-weights/", True)
 
