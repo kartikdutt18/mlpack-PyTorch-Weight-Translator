@@ -8,3 +8,5 @@ case "$1" in
   "darknet19") cd build && cmake ../ && sudo make -j2 && ./bin/test_network ;;
   "yolov1_tiny") cd build && cmake ../ && sudo make -j2 && ./bin/yolo_test ;;
 esac
+cd ../../../
+sudo rm -r cfg

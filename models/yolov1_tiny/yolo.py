@@ -45,6 +45,6 @@ class TinyYOLO(nn.Module):
         return nn.Sequential(*layers)
 
     def make_classifier(self, num_bboxes, num_classes):
-        return nn.Sequential(nn.Sequential(nn.Linear(in_features = 256 * 7 * 7, out_features = 1470),
-                nn.Sigmoid()))
+        return nn.Sequential(nn.Sequential(nn.Linear(in_features = 256 * 7 * 7, out_features = 1470)),
+            nn.Sigmoid())
 

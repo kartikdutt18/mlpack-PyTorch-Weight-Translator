@@ -27,7 +27,7 @@ def make_directory(base_path : str) -> int :
     print("Error : Cannot create desired path : ", base_path)
     return 1
 
-def generate_csv(csv_name : str, weight_matrix : torch.tensor, base_path : str) -> str :
+def generate_csv(csv_name : str, weight_matrix : torch.tensor, base_path : str, transpose = False) -> str :
     """
         Generates csv for weights or bias matrix.
 
@@ -41,6 +41,10 @@ def generate_csv(csv_name : str, weight_matrix : torch.tensor, base_path : str) 
     file_path = os.path.join(base_path, csv_name)
     matrix = weight_matrix.numpy().ravel()
     np.savetxt(file_path, matrix, fmt='%1.128f')
+    if transpose:
+        matrix = weight_matrix.numpy().transpose().ravel()
+        np.savetxt(file_path, matrix, fmt='%1.128f')
+        print("Transposed")
     return file_path
 
 def extract_weights(layer, layer_index, base_path) -> {} :
@@ -121,6 +125,33 @@ def extract_weights(layer, layer_index, base_path) -> {} :
         running_var_csv = "batchnorm_running_var_" + layer_index + ".csv" 
         parameter_dictionary["running_var_csv"] = generate_csv(running_var_csv, \
             layer.running_var.detach(), base_path)
+    elif (isinstance(layer, nn.Linear)) :
+        # The layer corresponds to Convolutional layer.
+        # For convolution layer we require weights and biases to reproduce the
+        # same result.
+        parameter_dictionary["name"] = "Linear"
+        parameter_dictionary["input-channels"] = layer.in_features
+        parameter_dictionary["output-channels"] = layer.out_features
+        # Assume weight matrix is never empty for nn.Linear()
+        parameter_dictionary["has_weights"] = 1
+        parameter_dictionary["weight_offset"] = 0
+        csv_name = "linear_weight_" + layer_index + ".csv"
+        parameter_dictionary["weight_csv"] = generate_csv(csv_name, \
+            layer.weight.detach(), base_path, True)
+        if layer.bias != None:
+            parameter_dictionary["has_bias"] = 1
+            parameter_dictionary["bias_offset"] = 0
+            bias_csv_name = "linear_bias_" + layer_index + ".csv"
+            parameter_dictionary["bias_csv"] = generate_csv(bias_csv_name, \
+                layer.bias.detach(), base_path)
+        else:
+            parameter_dictionary["has_bias"] = 0
+            parameter_dictionary["bias_offset"] = layer.out_features
+            parameter_dictionary["bias_csv"] = "None"
+        parameter_dictionary["has_running_mean"] = 0
+        parameter_dictionary["running_mean_csv"] = "None"
+        parameter_dictionary["has_running_var"] = 0
+        parameter_dictionary["running_var_csv"] = "None"
     else :
         # The layer corresponds to un-supported layer or layer doesn't have trainable
         # parameter. Example of such layers are nn.MaxPooling2d() and nn.SoftMax.
