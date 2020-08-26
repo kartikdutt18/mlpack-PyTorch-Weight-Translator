@@ -1,2 +1,2 @@
 from .darknet19 import *
-from .yolo import *
+from .yolov1 import *
