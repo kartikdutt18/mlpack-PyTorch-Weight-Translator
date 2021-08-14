@@ -152,6 +152,30 @@ def extract_weights(layer, layer_index, base_path) -> {} :
         parameter_dictionary["running_mean_csv"] = "None"
         parameter_dictionary["has_running_var"] = 0
         parameter_dictionary["running_var_csv"] = "None"
+    elif (isinstance(layer, nn.ConvTranspose2d)):
+        # The layer corresponds to Transpose Convolution layer.
+        parameter_dictionary["name"] = "TransposeConv2D"
+        parameter_dictionary["input-channels"] = layer.in_channels
+        parameter_dictionary["output-channels"] = layer.out_channels
+        parameter_dictionary["has_weights"] = 1
+        parameter_dictionary["weight_offset"] = 0
+        csv_name = "convTranspose_weight" + layer_index + ".csv"
+        parameter_dictionary["weight_csv"] = generate_csv(csv_name, \
+            layer.weight.detach(), base_path)
+        if layer.bias != None:
+            parameter_dictionary["has_bias"] = 1
+            parameter_dictionary["weight_offset"] = 0
+            bias_csv_name = "convTranspose_bias" + layer_index + ".csv"
+            parameter_dictionary["bias_csv"] = generate_csv(bias_csv_name, \
+                layer.bias.detach(), base_path)
+        else:
+            parameter_dictionary["has_bias"] = 0
+            parameter_dictionary["bias_offset"] = layer.out_channels
+            parameter_dictionary["bias_csv"] = "None"
+        parameter_dictionary["has_running_mean"] = 0
+        parameter_dictionary["running_mean_csv"] = "None"
+        parameter_dictionary["has_running_var"] = 0
+        parameter_dictionary["running_var_csv"] = "None"
     else :
         # The layer corresponds to un-supported layer or layer doesn't have trainable
         # parameter. Example of such layers are nn.MaxPooling2d() and nn.SoftMax.
@@ -281,5 +305,8 @@ if __name__ == "__main__":
       generate_csv("./input_tensor.csv", input_tensor, "./")
       output_tensor = model(input_tensor)
       generate_csv("./output_tensor.csv", output_tensor.detach(), "./")
+  if args.model == 'denoiseNet' :
+      model = DenoiseNet(True)
+      model.eval()
   parse_model(model, "./cfg/" + args.model + ".xml", "./models/" + args.model + "/mlpack-weights/", True)
 
