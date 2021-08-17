@@ -308,5 +308,11 @@ if __name__ == "__main__":
   if args.model == 'denoiseNet' :
       model = DenoiseNet(True)
       model.eval()
+  if args.model == 'anime_gan_descriminator':
+      model = AnimeGanDescriminator(True)
+      model.eval()
+  if args.model == 'anime_gan_generator':
+      model = AnimeGanGenerator(True)
+      model.eval()
   parse_model(model, "./cfg/" + args.model + ".xml", "./models/" + args.model + "/mlpack-weights/", True)
 
